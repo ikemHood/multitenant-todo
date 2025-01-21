@@ -14,7 +14,23 @@ type AppEnv = {
 };
 
 const app = new Hono<AppEnv>()
-app.use('*', cors())
+
+function isLocalhost(origin: string) {
+  return origin.includes('localhost') || origin.includes('127.0.0.1')
+}
+
+app.use('*', cors({
+  origin: (origin) => {
+    const rootDomain = process.env.ROOT_DOMAIN;
+
+    if (isLocalhost(origin) || isLocalhost(rootDomain!)) return origin;
+    if (!origin || !rootDomain) return null;
+    return origin === `https://${rootDomain}` ||
+      origin.endsWith(`.${rootDomain}`) ? origin : null;
+
+  },
+  credentials: true
+}))
 
 const tenants = new TenantModel()
 const users = new UserModel()
@@ -251,6 +267,25 @@ app.put('/todos/:id/complete', authMiddleware, async (c) => {
   tenant.todos.updateTodo(updatedTodo, user.id)
   return c.json(updatedTodo)
 })
+
+app.get('/tenant/validate', async (c) => {
+  const host = c.req.header('Host');
+  if (!host) {
+    return c.json({ message: 'Invalid request' }, 400);
+  }
+
+  // Skip validation for root domain
+  if (host === process.env.ROOT_DOMAIN) {
+    return c.json({ valid: true });
+  }
+
+  const tenant = tenants.getTenantByDomain(host);
+  if (!tenant) {
+    return c.json({ message: 'Tenant not found' }, 404);
+  }
+
+  return c.json({ valid: true });
+});
 
 app.get('/', (c) => {
   return c.text('H3ll0 Mvd3rfvk3r!')

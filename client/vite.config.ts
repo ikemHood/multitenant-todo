@@ -8,7 +8,7 @@ export default defineConfig({
   },
   // Add env variables with types
   define: {
-    'import.meta.env.VITE_BACKEND_URL': JSON.stringify(Bun.env.VITE_BACKEND_URL),
-    'import.meta.env.VITE_ROOT_DOMAIN': JSON.stringify(Bun.env.VITE_ROOT_DOMAIN),
+    'import.meta.env.VITE_BACKEND_URL': JSON.stringify(process.env.VITE_BACKEND_URL),
+    'import.meta.env.VITE_ROOT_DOMAIN': JSON.stringify(process.env.VITE_ROOT_DOMAIN),
   }
 })
