@@ -69,7 +69,7 @@ app.post('/register', async (c) => {
   const hashedPassword = await Bun.password.hash(password)
   users.createUser({ id, email, password: hashedPassword })
 
-  const fullDomain = `${subdomain}.${process.env.ROOT_DOMAIN}`
+  const fullDomain = `https://${subdomain}.${process.env.ROOT_DOMAIN}`
 
   tenants.createTenant({
     id: tenantId,
@@ -80,7 +80,7 @@ app.post('/register', async (c) => {
   })
 
   const token = await sign({ id, tenantId }, env.JWT_SECRET)
-  const redirectUrl = `https://${fullDomain}/todos?auth=${token}`
+  const redirectUrl = `${fullDomain}/todos?auth=${token}`
 
   return c.json({
     message: 'User created',
