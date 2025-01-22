@@ -26,13 +26,10 @@ async function validateTenant() {
     if (hostname === rootDomain || hostname.includes("localhost")) {
         return true;
     }
+    console.log("Hostname:", hostname)
 
     try {
-        const response = await fetch(`${env.VITE_BACKEND_URL}/tenant/validate`, {
-            headers: {
-                'Host': hostname
-            }
-        });
+        const response = await fetch(`${env.VITE_BACKEND_URL}/tenant/validate`);
 
         if (!response.ok) {
             // Redirect to main domain if tenant doesn't exist
