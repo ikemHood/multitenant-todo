@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js"
+import { env } from '../env'
 
 export default function Auth() {
     const [email, setEmail] = createSignal('')
@@ -6,12 +7,13 @@ export default function Auth() {
     const [tenantName, setTenantName] = createSignal('')
     const [domains, setDomains] = createSignal('')
     const [isRegistering, setIsRegistering] = createSignal(false)
+
     const handleSubmit = async (e: Event) => {
 
         e.preventDefault()
         try {
             if (isRegistering()) {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, {
+                const response = await fetch(`${env.VITE_BACKEND_URL}/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -33,7 +35,7 @@ export default function Auth() {
                     window.location.href = data.redirectUrl;
                 }
             } else {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
+                const response = await fetch(`${env.VITE_BACKEND_URL}/login`, {
                     method: 'POST',
                     body: JSON.stringify({ email: email(), password: password() }),
                 })

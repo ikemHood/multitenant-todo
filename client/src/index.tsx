@@ -2,7 +2,7 @@
 import { render } from 'solid-js/web'
 import './index.css'
 import { lazy, onMount } from 'solid-js'
-
+import { env } from './env'
 import { Router } from "@solidjs/router";
 
 const root = document.getElementById('root')
@@ -20,15 +20,15 @@ const routes = [
 // Add tenant validation
 async function validateTenant() {
     const hostname = window.location.hostname;
-    const rootDomain = import.meta.env.VITE_ROOT_DOMAIN;
+    const rootDomain = env.VITE_ROOT_DOMAIN;
 
     // Skip validation for root domain
-    if (hostname === rootDomain) {
+    if (hostname === rootDomain || hostname.includes("localhost")) {
         return true;
     }
 
     try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/tenant/validate`, {
+        const response = await fetch(`${env.VITE_BACKEND_URL}/tenant/validate`, {
             headers: {
                 'Host': hostname
             }

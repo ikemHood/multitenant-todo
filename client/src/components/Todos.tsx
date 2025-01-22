@@ -1,4 +1,5 @@
 import { createSignal, onMount } from "solid-js"
+import { env } from '../env'
 
 interface Todo {
     id: string
@@ -17,7 +18,7 @@ export default function Todos() {
     });
 
     const fetchTodos = async () => {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/todos`, {
+        const response = await fetch(`${env.VITE_BACKEND_URL}/todos`, {
             headers: getAuthHeaders(),
         })
         const data = await response.json()
@@ -25,7 +26,7 @@ export default function Todos() {
     }
 
     const createTodo = async () => {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/todos`, {
+        const response = await fetch(`${env.VITE_BACKEND_URL}/todos`, {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify(todo()),
@@ -35,7 +36,7 @@ export default function Todos() {
     }
 
     // const updateTodo = async (id: string) => {
-    //     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/todos/${id}`, {
+    //     const response = await fetch(`${env.VITE_BACKEND_URL}/todos/${id}`, {
     //         method: 'PUT',
     //         headers: getAuthHeaders(),
     //         body: JSON.stringify(todo()),
@@ -45,7 +46,7 @@ export default function Todos() {
     // }
 
     const deleteTodo = async (id: string) => {
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/todos/${id}`, {
+        await fetch(`${env.VITE_BACKEND_URL}/todos/${id}`, {
             method: 'DELETE',
             headers: getAuthHeaders(),
         })
@@ -53,7 +54,7 @@ export default function Todos() {
     }
 
     const markTodo = async (id: string) => {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/todos/${id}/complete`, {
+        const response = await fetch(`${env.VITE_BACKEND_URL}/todos/${id}/complete`, {
             method: 'PUT',
             headers: getAuthHeaders(),
         })
