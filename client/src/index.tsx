@@ -18,36 +18,36 @@ const routes = [
 ]
 
 // Add tenant validation
-async function validateTenant() {
-    const hostname = window.location.hostname;
-    const rootDomain = env.VITE_ROOT_DOMAIN;
+// async function validateTenant() {
+//     const hostname = window.location.hostname;
+//     const rootDomain = env.VITE_ROOT_DOMAIN;
 
-    // Skip validation for root domain
-    if (hostname === rootDomain || hostname.includes("localhost")) {
-        return true;
-    }
-    console.log("Hostname:", hostname)
+//     // Skip validation for root domain
+//     if (hostname === rootDomain || hostname.includes("localhost")) {
+//         return true;
+//     }
+//     console.log("Hostname:", hostname)
 
-    try {
-        const response = await fetch(`${env.VITE_BACKEND_URL}/tenant/validate`);
+//     try {
+//         const response = await fetch(`${env.VITE_BACKEND_URL}/tenant/validate`);
 
-        if (!response.ok) {
-            // Redirect to main domain if tenant doesn't exist
-            window.location.href = `https://${rootDomain}`;
-            return false;
-        }
-        return true;
-    } catch (error) {
-        console.error('Error validating tenant:', error);
-        window.location.href = `https://${rootDomain}`;
-        return false;
-    }
-}
+//         if (!response.ok) {
+//             // Redirect to main domain if tenant doesn't exist
+//             window.location.href = `https://${rootDomain}`;
+//             return false;
+//         }
+//         return true;
+//     } catch (error) {
+//         console.error('Error validating tenant:', error);
+//         window.location.href = `https://${rootDomain}`;
+//         return false;
+//     }
+// }
 
 onMount(async () => {
     // First validate the tenant
-    const isValid = await validateTenant();
-    if (!isValid) return;
+    // const isValid = await validateTenant();
+    // if (!isValid) return;
 
     const urlParams = new URLSearchParams(window.location.search);
     const authToken = urlParams.get('auth');
