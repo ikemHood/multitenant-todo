@@ -2,7 +2,7 @@
 import { render } from 'solid-js/web'
 import './index.css'
 import { lazy, onMount } from 'solid-js'
-import { env } from './env'
+// import { env } from './env'
 import { Router } from "@solidjs/router";
 
 const root = document.getElementById('root')
